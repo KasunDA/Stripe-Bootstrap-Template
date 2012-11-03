@@ -80,7 +80,7 @@
                         cvc: $('#card-cvc').val(),
                         exp_month: $('#card-expiry-month').val(),
                         exp_year: $('#card-expiry-year').val()
-                    }, chargeAmount, stripeResponseHandler);
+                    }, /* chargeAmount, **Deprecated parameter** */ stripeResponseHandler);
                     return false; // submit from callback
                 });
             });
