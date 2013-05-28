@@ -5,13 +5,14 @@
 	
 	/*  Initialize variables */
 	Stripe::setApiKey($ApiKey);
-  $error	 = '';
-  $success = '';
+	$error	 = '';
+	$success = '';
+  
 	/* Sanitize all external data first */
 	$client_number			= htmlspecialchars(mysql_real_escape_string($_POST['client-number']));
-	$card_name 					= htmlspecialchars(mysql_real_escape_string($_POST['card-name']));
-	$card_address1 			= htmlspecialchars(mysql_real_escape_string($_POST['card-address-1']));
-	$card_address2 			= htmlspecialchars(mysql_real_escape_string($_POST['card-address-2']));
+	$card_name 				= htmlspecialchars(mysql_real_escape_string($_POST['card-name']));
+	$card_address_1 		= htmlspecialchars(mysql_real_escape_string($_POST['card-address-1']));
+	$card_address_2 		= htmlspecialchars(mysql_real_escape_string($_POST['card-address-2']));
 	$card_city 					= htmlspecialchars(mysql_real_escape_string($_POST['card-city']));
 	$card_address_state = htmlspecialchars(mysql_real_escape_string($_POST['card-address-state']));
 	$card_address_zip 	= htmlspecialchars(mysql_real_escape_string($_POST['card-address-zip']));
@@ -29,21 +30,21 @@
 	/*======================================*/		
 	/*     Try and Process the sale here    */		
 	/*======================================*/		
-  try {
+	try {
 		if (!isset($_POST['stripeToken']))
-      throw new Exception("The Stripe Token was not generated correctly");
-    $ch= Stripe_Charge::create(array("amount" => $_POST['stripe-amount'],
+	  throw new Exception("The Stripe Token was not generated correctly");
+	$ch= Stripe_Charge::create(array("amount" => $_POST['stripe-amount'],
 				"description" => "Client:".$client_number." - Payee:".$card_name." - Email:".$card_email." - Phone:".$card_phone,
-        "currency" => "usd",
-        "card" => $_POST['stripeToken']));
+		"currency" => "usd",
+		"card" => $_POST['stripeToken']));
 	} /* /try - Catch Stripe Process errors here */
-  catch (Exception $e) {
+	catch (Exception $e) {
 		/* Stripe processing error. Tell the user, email the admin, then stop. */
-    $error = $e->getMessage();
+	$error = $e->getMessage();
 		echo "Sorry, something went wrong. Your payment was not processed. Please contact ".$company." at Phone: ".$phone. " or email: ".$email." for help with this payment.\r\n Error Message: ". $error;
 		mail ($AdminEmail, "Error Processing ".$Company." Stripe Payment", $error); /* Send Error for debug - Problem processing payment */ 
 		die(); /* Stop PHP Processing Now */
-  } /* /catch */
+	} /* /catch */
 
 
 	/*===========================================================*/
@@ -111,27 +112,27 @@ Amount Paid: {$amount_formatted}
 END;
 		
 		
-		/* Email the receipt here */
-		mail($card_email, "Receipt for payment to ".$Company, $receipt_text, "From: ".$Email."\r\nReply-To: ".$Email."\r\nBcc: ".$Email);
-		
-		
-		if ($Debug) { //If you are debugging, stay here at the end of the process page.
-			echo 'Your payment was successful. Click <a href="approved.php">here</a> to view approved page.';
-		} else { //You are not debugging, proceed on to the fancy approved page.
-			//Take customer to Approved page with receipt
-			header('Location: approved.php');
-	  } // end-if ($debug)
-	
+	/* Email the receipt here */
+	mail($card_email, "Receipt for payment to ".$Company, $receipt_text, "From: ".$Email."\r\nReply-To: ".$Email."\r\nBcc: ".$Email);
+
+
+	if ($Debug) { //If you are debugging, stay here at the end of the process page.
+		echo 'Your payment was successful. Click <a href="approved.php">here</a> to view approved page.';
+	} else { //You are not debugging, proceed on to the fancy approved page.
+		//Take customer to Approved page with receipt
+		header('Location: approved.php');
+	} // end-if ($debug)
+
 	} /* /Try Catch receipt and email errors here */
-  catch (Exception $e) {
-    $error = $e->getMessage();
-  } /* /catch */
+	catch (Exception $e) {
+	$error = $e->getMessage();
+	} /* /catch */
 
 	/* Dropped though, display an error to the user. */
 	if (strlen($error)) {
-		echo "Sorry, something went wrong while generating your receipt. Your payment was processed successfully. Do not re-attempt. Please contact ".$company." at Phone: ".$phone. " or email: ".$email." to confirm this payment was successful.";
-		echo "Error:" . $error;
-		mail ($AdminEmail, "Error Processing ".$Company." Stripe Payment", $error); /* Send Error for debug - Problem processing payment */ 
+	echo "Sorry, something went wrong while generating your receipt. Your payment was processed successfully. Do not re-attempt. Please contact ".$company." at Phone: ".$phone. " or email: ".$email." to confirm this payment was successful.";
+	echo "Error:" . $error;
+	mail ($AdminEmail, "Error Processing ".$Company." Stripe Payment", $error); /* Send Error for debug - Problem processing payment */ 
 
 	}
   
