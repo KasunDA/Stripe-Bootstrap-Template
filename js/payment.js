@@ -1,13 +1,7 @@
 		var chargeAmount = 0;  //Create a global var to store the corrected non-decimal amount
             //Stripe.setPublishableKey('<? echo $PublishableKey ?>'); 
             function stripeResponseHandler(status, response) {
-               if (response.error.param=='amount') {
-                    // re-enable the submit button
-                    $('.submit-button').removeAttr("disabled");
-                    // show the errors on the form
-                    $(".payment-errors").html("An invalid amount was entered");
-								}
-                else if (response.error) {
+               if (response.error) {
                     // re-enable the submit button
                     $('.submit-button').removeAttr("disabled");
                     // show the errors on the form
