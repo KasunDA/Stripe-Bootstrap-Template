@@ -2,15 +2,9 @@
    Overview
 ==============
 
-	A simple template using the Twitter Bootstrap project and Stripe credit card processor.
+A simple template using the Twitter Bootstrap project and Stripe credit card processor.
 
-	Everything you need is done, simply put your company information, MySQL database and
-	Stripe Keys in the db_inc.php file. You are now ready to start taking credit card
-	payments directly on your web site. This is not meant to be a full featured cc processing
-	project. Hopefully you can implement this on your site quickly to receive payments for
-	services directly.
-
-	jeff@micro-ram.com
+Everything you need is done, simply put your company information, MySQL database and Stripe Keys in the db_inc.php file. You are now ready to start taking credit card payments directly on your web site. This is not meant to be a full featured cc processing project. Hopefully you can implement this on your site quickly to receive payments for services directly.
 
 ==============
  Installation
